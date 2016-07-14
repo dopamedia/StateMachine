@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="state_machine" type="state_machineType"/>
+  <xs:complexType name="transitionsType">
+    <xs:sequence>
+      <xs:element type="transitionType" name="transition"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="eventsType">
+    <xs:sequence>
+      <xs:element type="eventType" name="event"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="state_machineType">
+    <xs:sequence>
+      <xs:element type="processType" name="process"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="stateType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="statesType">
+    <xs:sequence>
+      <xs:element type="stateType" name="state" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="eventType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute type="xs:string" name="name"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="processType">
+    <xs:sequence>
+      <xs:element type="statesType" name="states"/>
+      <xs:element type="transitionsType" name="transitions"/>
+      <xs:element type="eventsType" name="events"/>
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="name"/>
+  </xs:complexType>
+  <xs:complexType name="transitionType">
+    <xs:sequence>
+      <xs:element type="xs:string" name="source"/>
+      <xs:element type="xs:string" name="target"/>
+      <xs:element type="xs:string" name="event"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

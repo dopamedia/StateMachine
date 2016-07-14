@@ -1,0 +1,35 @@
+{
+  "name": "dopamedia/statemachine",
+  "description": "StateMachine for Magento2",
+  "license": "MIT",
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://repo.magento.com/"
+    }
+  ],
+  "require": {
+    "php": "~5.6.0|7.0.2|~7.0.6",
+    "magento/framework": "100.1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8",
+    "phpmd/phpmd": "^2.4",
+    "squizlabs/php_codesniffer": "^2.5",
+    "sebastian/phpcpd": "^2.0",
+    "satooshi/php-coveralls": "^1.0",
+    "phpdocumentor/phpdocumentor": "^2.8"
+  },
+  "type": "magento2-module",
+  "scripts": {
+    "test": "phpunit"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Dopamedia\\StateMachine\\": ""
+    }
+  }
+}
