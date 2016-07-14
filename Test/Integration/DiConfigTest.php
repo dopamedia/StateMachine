@@ -17,10 +17,10 @@ use Magento\TestFramework\ObjectManager;
  */
 class DiConfigTest extends \PHPUnit_Framework_TestCase
 {
-    protected $configType = Model\Config\StateMachine\Virtual::class;
-    protected $readerType = Model\Config\StateMachine\Reader\Virtual::class;
-    protected $schemaLocatorType = Model\Config\StateMachine\SchemaLocator\Virtual::class;
-    protected $converterType = Model\Config\StateMachine\Converter::class;
+    protected $configType = Model\Config\Virtual::class;
+    protected $readerType = Model\Config\Reader\Virtual::class;
+    protected $schemaLocatorType = Model\Config\SchemaLocator\Virtual::class;
+    protected $converterType = Model\Config\Converter::class;
 
     /**
      * @return ObjectManagerConfig
@@ -77,7 +77,7 @@ class DiConfigTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testStateMachineConfigDataDiConfig()
+    public function testConfigDataDiConfig()
     {
         $this->assertVirtualType(\Magento\Framework\Config\Data::class, $this->configType);
         $this->assertDiArgumentSame('dopamedia_state_machine', $this->configType, 'cacheId');
@@ -87,7 +87,7 @@ class DiConfigTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testStateMachineConfigReaderDiConfig()
+    public function testConfigReaderDiConfig()
     {
         $this->assertVirtualType(\Magento\Framework\Config\Reader\Filesystem::class, $this->readerType);
         $this->assertDiArgumentSame('state_machine.xml', $this->readerType, 'fileName');
@@ -98,7 +98,7 @@ class DiConfigTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testStateMachineConfigSchemaLocatorDiConfig()
+    public function testConfigSchemaLocatorDiConfig()
     {
         $this->assertVirtualType(\Magento\Framework\Config\GenericSchemaLocator::class, $this->schemaLocatorType);
         $this->assertDiArgumentSame('Dopamedia_StateMachine', $this->schemaLocatorType, 'moduleName');
@@ -108,7 +108,7 @@ class DiConfigTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testStateMachineDataCanBeAccessed()
+    public function testDataCanBeAccessed()
     {
         $this->markTestSkipped(
             'since the module itself does not contain a state_machine.xml this test could not be passed'

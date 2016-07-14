@@ -6,7 +6,7 @@
  * Time: 22:46
  */
 
-namespace Dopamedia\StateMachine\Model\Config\StateMachine;
+namespace Dopamedia\StateMachine\Model\Config;
 
 class Converter implements \Magento\Framework\Config\ConverterInterface
 {
