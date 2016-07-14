@@ -11,7 +11,7 @@ namespace Dopamedia\StateMachine\Model;
 use Dopamedia\StateMachine\Api\ProcessListInterface;
 use Dopamedia\StateMachine\Model\Processes\ConfigInterface;
 
-class ConfigList implements ProcessListInterface
+class ProcessList implements ProcessListInterface
 {
     /**
      * @var ConfigInterface
@@ -45,7 +45,7 @@ class ConfigList implements ProcessListInterface
     /**
      * @inheritDoc
      */
-    public function getConfigs()
+    public function getProcesses()
     {
         if ($this->processes === null) {
             $processes = [];

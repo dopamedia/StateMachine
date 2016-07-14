@@ -29,6 +29,6 @@ class Config extends \Magento\Framework\Config\Data implements ConfigInterface
      */
     public function getAll()
     {
-        // TODO: Implement getAll() method.
+        return $this->get();
     }
 }

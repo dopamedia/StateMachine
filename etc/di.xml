@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Dopamedia\StateMachine\Model\Processes\ConfigInterface" type="Dopamedia\StateMachine\Model\Processes\Config" />
     <type name="Dopamedia\StateMachine\Model\Processes\Config">
         <arguments>
             <argument name="reader" xsi:type="object">Dopamedia\StateMachine\Model\Processes\Config\Reader\Virtual</argument>

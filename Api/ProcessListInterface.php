@@ -14,5 +14,5 @@ interface ProcessListInterface
     /**
      * @return \Dopamedia\StateMachine\Api\Data\ConfigInterface[]
      */
-    public function getConfigs();
+    public function getProcesses();
 }
