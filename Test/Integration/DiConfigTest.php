@@ -17,10 +17,10 @@ use Magento\TestFramework\ObjectManager;
  */
 class DiConfigTest extends \PHPUnit_Framework_TestCase
 {
-    protected $configType = Model\Config\Virtual::class;
-    protected $readerType = Model\Config\Reader\Virtual::class;
-    protected $schemaLocatorType = Model\Config\SchemaLocator\Virtual::class;
-    protected $converterType = Model\Config\Converter::class;
+    protected $configType = Model\Processes\Config::class;
+    protected $readerType = Model\Processes\Config\Reader\Virtual::class;
+    protected $schemaLocatorType = Model\Processes\Config\SchemaLocator\Virtual::class;
+    protected $converterType = Model\Processes\Config\Converter::class;
 
     /**
      * @return ObjectManagerConfig
@@ -53,7 +53,6 @@ class DiConfigTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($expected, $arguments[$argumentName]);
     }
 
-
     /**
      * @param string $expectedType
      * @param string $type
@@ -79,8 +78,6 @@ class DiConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testConfigDataDiConfig()
     {
-        $this->assertVirtualType(\Magento\Framework\Config\Data::class, $this->configType);
-        $this->assertDiArgumentSame('dopamedia_state_machine', $this->configType, 'cacheId');
         $this->assertDiArgumentInstance($this->readerType, $this->configType, 'reader');
     }
 

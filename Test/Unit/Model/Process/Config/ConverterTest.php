@@ -6,7 +6,7 @@
  * Time: 22:38
  */
 
-namespace Dopamedia\StateMachine\Model\Config;
+namespace Dopamedia\StateMachine\Model\Processes\Config;
 
 use Magento\Framework\Config\ConverterInterface;
 
