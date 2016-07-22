@@ -63,14 +63,14 @@ interface ProcessStateInterface
      *
      * @return ProcessEventInterface
      */
-    public function getEvent(string $eventName);
+    public function getEvent($eventName);
 
     /**
      * @param string $id
      *
      * @return bool
      */
-    public function hasEvent(string $id);
+    public function hasEvent($id);
 
     /**
      * @return bool
