@@ -130,7 +130,7 @@ class State implements ProcessStateInterface
     /**
      * @inheritDoc
      */
-    public function getEvent(string $eventName)
+    public function getEvent($eventName)
     {
         foreach ($this->outgoingTransitions as $transition) {
             if ($transition->hasEvent()) {
@@ -149,7 +149,7 @@ class State implements ProcessStateInterface
     /**
      * @inheritDoc
      */
-    public function hasEvent(string $id)
+    public function hasEvent($id)
     {
         foreach ($this->outgoingTransitions as $transition) {
             if ($transition->hasEvent()) {
