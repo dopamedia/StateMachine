@@ -17,10 +17,10 @@ use Magento\TestFramework\ObjectManager;
  */
 class DiConfigTest extends \PHPUnit_Framework_TestCase
 {
-    protected $configType = Model\Processes\Config::class;
-    protected $readerType = Model\Processes\Config\Reader\Virtual::class;
-    protected $schemaLocatorType = Model\Processes\Config\SchemaLocator\Virtual::class;
-    protected $converterType = Model\Processes\Config\Converter::class;
+    protected $configType = Model\Configuration::class;
+    protected $readerType = Model\Configuration\Reader\Virtual::class;
+    protected $schemaLocatorType = Model\Configuration\SchemaLocator\Virtual::class;
+    protected $converterType = Model\Configuration\Converter::class;
 
     /**
      * @return ObjectManagerConfig

@@ -2,13 +2,15 @@
 /**
  * Created by PhpStorm.
  * User: pandi
- * Date: 14.07.16
- * Time: 21:01
+ * Date: 16.07.16
+ * Time: 14:46
  */
 
-namespace Dopamedia\StateMachine\Model\Processes;
+namespace Dopamedia\StateMachine\Model;
 
-class Config extends \Magento\Framework\Config\Data implements ConfigInterface
+use Dopamedia\StateMachine\Api\ProcessProcessInterface;
+
+class Configuration extends \Magento\Framework\Config\Data implements ConfigurationInterface
 {
     /**
      * @param \Magento\Framework\Config\ReaderInterface $reader
@@ -29,6 +31,14 @@ class Config extends \Magento\Framework\Config\Data implements ConfigInterface
      */
     public function getAll()
     {
-        return $this->get();
+        return $this->get('processes');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getProcess($processName)
+    {
+        return $this->get('processes/' . $processName, []);
     }
 }

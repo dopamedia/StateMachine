@@ -6,10 +6,10 @@
  * Time: 21:44
  */
 
-namespace Dopamedia\StateMachine\Test\Unit\Model\Process;
+namespace Dopamedia\StateMachine\Model;
 
 
-class ConfigTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -22,7 +22,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     private $cacheMock;
 
     /**
-     * @var \Dopamedia\StateMachine\Model\Processes\Config
+     * @var \Dopamedia\StateMachine\Model\Configuration
      */
     private $model;
 
@@ -47,9 +47,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         )->method(
             'load'
         )->will(
-            $this->returnValue(serialize($expected))
+            $this->returnValue(serialize(['processes' => $expected]))
         );
-        $this->model = new \Dopamedia\StateMachine\Model\Processes\Config($this->readerMock, $this->cacheMock, 'cache_id');
+        $this->model = new \Dopamedia\StateMachine\Model\Configuration($this->readerMock, $this->cacheMock, 'cache_id');
         $this->assertEquals($expected, $this->model->getAll());
     }
 }

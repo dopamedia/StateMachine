@@ -6,7 +6,7 @@
  * Time: 22:38
  */
 
-namespace Dopamedia\StateMachine\Model\Processes\Config;
+namespace Dopamedia\StateMachine\Model\Configuration;
 
 use Magento\Framework\Config\ConverterInterface;
 
@@ -79,9 +79,10 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
 </state_machine>
 XML;
         $result = $this->converter->convert($this->createSource($xml));
-        $this->assertArrayHasKey('simple', $result);
-        $this->assertArrayHasKey('states', $result['simple']);
-        $this->assertArrayHasKey('transitions', $result['simple']);
-        $this->assertArrayHasKey('events', $result['simple']);
+        $this->assertArrayHasKey('processes', $result);
+        $this->assertArrayHasKey('simple', $result['processes']);
+        $this->assertArrayHasKey('states', $result['processes']['simple']);
+        $this->assertArrayHasKey('transitions', $result['processes']['simple']);
+        $this->assertArrayHasKey('events', $result['processes']['simple']);
     }
 }

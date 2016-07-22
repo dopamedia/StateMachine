@@ -6,7 +6,7 @@
  * Time: 22:46
  */
 
-namespace Dopamedia\StateMachine\Model\Processes\Config;
+namespace Dopamedia\StateMachine\Model\Configuration;
 
 class Converter implements \Magento\Framework\Config\ConverterInterface
 {
@@ -19,11 +19,12 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
         $rootElement = $this->getRootElement($document);
         foreach ($this->getChildrenByName($rootElement, 'process') as $processNode) {
             $processName = $processNode->attributes->getNamedItem('name')->nodeValue;
-            $result[$processName] = [
+            $result['processes'][$processName] = [
                 'states' => $this->gatherStates($processNode),
                 'transitions' => $this->gatherTransitions($processNode),
                 'events' => $this->gatherEvents($processNode)
             ];
+
         }
         return $result;
     }

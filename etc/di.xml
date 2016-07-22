@@ -1,19 +1,23 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <preference for="Dopamedia\StateMachine\Model\Processes\ConfigInterface" type="Dopamedia\StateMachine\Model\Processes\Config" />
-    <type name="Dopamedia\StateMachine\Model\Processes\Config">
+    <preference for="Dopamedia\StateMachine\Api\ProcessEventInterface" type="Dopamedia\StateMachine\Model\Process\Event" />
+    <preference for="Dopamedia\StateMachine\Api\ProcessProcessInterface" type="Dopamedia\StateMachine\Model\Process\Process" />
+    <preference for="Dopamedia\StateMachine\Api\ProcessStateInterface" type="Dopamedia\StateMachine\Model\Process\State" />
+    <preference for="Dopamedia\StateMachine\Api\ProcessTransitionInterface" type="Dopamedia\StateMachine\Model\Process\Transition" />
+    <preference for="Dopamedia\StateMachine\Model\ConfigurationInterface" type="Dopamedia\StateMachine\Model\Configuration" />
+    <type name="Dopamedia\StateMachine\Model\Configuration">
         <arguments>
-            <argument name="reader" xsi:type="object">Dopamedia\StateMachine\Model\Processes\Config\Reader\Virtual</argument>
+            <argument name="reader" xsi:type="object">Dopamedia\StateMachine\Model\Configuration\Reader\Virtual</argument>
         </arguments>
     </type>
-    <virtualType name="Dopamedia\StateMachine\Model\Processes\Config\Reader\Virtual" type="\Magento\Framework\Config\Reader\Filesystem">
+    <virtualType name="Dopamedia\StateMachine\Model\Configuration\Reader\Virtual" type="\Magento\Framework\Config\Reader\Filesystem">
         <arguments>
             <argument name="fileName" xsi:type="string">state_machine.xml</argument>
-            <argument name="schemaLocator" xsi:type="object">Dopamedia\StateMachine\Model\Processes\Config\SchemaLocator\Virtual</argument>
-            <argument name="converter" xsi:type="object">Dopamedia\StateMachine\Model\Processes\Config\Converter</argument>
+            <argument name="schemaLocator" xsi:type="object">Dopamedia\StateMachine\Model\Configuration\SchemaLocator\Virtual</argument>
+            <argument name="converter" xsi:type="object">Dopamedia\StateMachine\Model\Configuration\Converter</argument>
         </arguments>
     </virtualType>
-    <virtualType name="Dopamedia\StateMachine\Model\Processes\Config\SchemaLocator\Virtual" type="Magento\Framework\Config\GenericSchemaLocator">
+    <virtualType name="Dopamedia\StateMachine\Model\Configuration\SchemaLocator\Virtual" type="Magento\Framework\Config\GenericSchemaLocator">
         <arguments>
             <argument name="moduleName" xsi:type="string">Dopamedia_StateMachine</argument>
             <argument name="schema" xsi:type="string">state_machine.xsd</argument>
