@@ -43,20 +43,12 @@ class StateMachineFactory
     public function createStateMachineBuilder()
     {
         return $this->objectManager->create('Dopamedia\StateMachine\Model\StateMachine\Builder', [
-            $this->createProcessEvent(),
-            $this->createProcessState(),
-            $this->createProcessTransition(),
-            $this->createProcessProcess(),
-            $this->getConfiguration()
+            'event' => $this->createProcessEvent(),
+            'process' => $this->createProcessState(),
+            'state' => $this->createProcessTransition(),
+            'transition' => $this->createProcessProcess(),
+            'configuration' => $this->getConfiguration()
         ]);
-    }
-
-    /**
-     * @return ConfigurationInterface
-     */
-    public function getConfiguration()
-    {
-        return $this->objectManager->create('Dopamedia\StateMachine\Model\Configuration');
     }
 
     /**
@@ -64,7 +56,7 @@ class StateMachineFactory
      */
     public function createProcessEvent()
     {
-        return $this->objectManager->create('Dopamedia\StateMachine\Model\Process\Event');
+        return $this->objectManager->create('Dopamedia\StateMachine\Api\ProcessEventInterface');
     }
 
     /**
@@ -72,7 +64,7 @@ class StateMachineFactory
      */
     public function createProcessState()
     {
-        return $this->objectManager->create('Dopamedia\StateMachine\Model\Process\State');
+        return $this->objectManager->create('Dopamedia\StateMachine\Api\ProcessStateInterface');
     }
 
     /**
@@ -80,7 +72,7 @@ class StateMachineFactory
      */
     public function createProcessTransition()
     {
-        return $this->objectManager->create('Dopamedia\StateMachine\Model\Process\Transition');
+        return $this->objectManager->create('Dopamedia\StateMachine\Api\ProcessTransitionInterface');
     }
 
     /**
@@ -88,7 +80,15 @@ class StateMachineFactory
      */
     public function createProcessProcess()
     {
-        return $this->objectManager->create('Dopamedia\StateMachine\Model\Process\Process');
+        return $this->objectManager->create('Dopamedia\StateMachine\Api\ProcessProcessInterface');
+    }
+
+    /**
+     * @return ConfigurationInterface
+     */
+    public function getConfiguration()
+    {
+        return $this->objectManager->create('Dopamedia\StateMachine\Model\ConfigurationInterface');
     }
 
     /**
@@ -97,7 +97,7 @@ class StateMachineFactory
      */
     public function createGraphDrawer($stateMachineName)
     {
-        return $this->objectManager->create('Dopamedia\StateMachine\Model\Graph\Drawer', [
+        return $this->objectManager->create('Dopamedia\StateMachine\Model\Graph\DrawerInterface', [
             'graph' => $this->createGraph($stateMachineName)
         ]);
     }
