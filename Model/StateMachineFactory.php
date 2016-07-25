@@ -42,19 +42,19 @@ class StateMachineFactory
      */
     public function createStateMachineBuilder()
     {
-        $this->objectManager->create('Dopamedia\StateMachine\Model\StateMachine\Builder', [
+        return $this->objectManager->create('Dopamedia\StateMachine\Model\StateMachine\Builder', [
             $this->createProcessEvent(),
             $this->createProcessState(),
             $this->createProcessTransition(),
             $this->createProcessProcess(),
-            $this->getConfig()
+            $this->getConfiguration()
         ]);
     }
 
     /**
      * @return ConfigurationInterface
      */
-    public function getConfig()
+    public function getConfiguration()
     {
         return $this->objectManager->create('Dopamedia\StateMachine\Model\Configuration');
     }
@@ -97,6 +97,20 @@ class StateMachineFactory
      */
     public function createGraphDrawer($stateMachineName)
     {
-        return $this->objectManager->create('Dopamedia\StateMachine\Model\Graph\Drawer', $stateMachineName);
+        return $this->objectManager->create('Dopamedia\StateMachine\Model\Graph\Drawer', [
+            'graph' => $this->createGraph($stateMachineName)
+        ]);
     }
+
+    /**
+     * @param string $processName
+     * @return \Dopamedia\StateMachine\Model\Graph\GraphInterface
+     */
+    public function createGraph($processName)
+    {
+        return $this->objectManager->create('\Dopamedia\StateMachine\Model\Graph\GraphInterface',
+            ['name' => $processName]
+        );
+    }
+
 }

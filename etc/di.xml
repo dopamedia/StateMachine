@@ -5,6 +5,8 @@
     <preference for="Dopamedia\StateMachine\Api\ProcessStateInterface" type="Dopamedia\StateMachine\Model\Process\State" />
     <preference for="Dopamedia\StateMachine\Api\ProcessTransitionInterface" type="Dopamedia\StateMachine\Model\Process\Transition" />
     <preference for="Dopamedia\StateMachine\Model\ConfigurationInterface" type="Dopamedia\StateMachine\Model\Configuration" />
+    <preference for="Dopamedia\StateMachine\Model\Graph\GraphInterface" type="Dopamedia\StateMachine\Model\Graph\Graph" />
+    <preference for="Dopamedia\StateMachine\Model\Graph\Adapter\GraphAdapterInterface" type="Dopamedia\StateMachine\Model\Graph\Adapter\PhpDocumentorGraphAdapter" />
     <type name="Dopamedia\StateMachine\Model\Configuration">
         <arguments>
             <argument name="reader" xsi:type="object">Dopamedia\StateMachine\Model\Configuration\Reader\Virtual</argument>
@@ -23,4 +25,11 @@
             <argument name="schema" xsi:type="string">state_machine.xsd</argument>
         </arguments>
     </virtualType>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="state_machine_draw_graph" xsi:type="object">Dopamedia\StateMachine\Console\Command\DrawGraphCommand</item>
+            </argument>
+        </arguments>
+    </type>
 </config>

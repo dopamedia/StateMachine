@@ -99,15 +99,15 @@ class Drawer implements DrawerInterface
     protected $fontSizeSmall = null;
 
     /**
-     * @var \Dopamedia\StateMachine\Model\GraphInterface
+     * @var \Dopamedia\StateMachine\Model\Graph\GraphInterface
      */
     protected $graph;
 
     /**
-     * @param \Dopamedia\StateMachine\Model\GraphInterface $graph
+     * @param \Dopamedia\StateMachine\Model\Graph\GraphInterface $graph
      */
     public function __construct(
-        \Dopamedia\StateMachine\Model\GraphInterface $graph
+        \Dopamedia\StateMachine\Model\Graph\GraphInterface $graph
     )
     {
         $this->graph = $graph;
