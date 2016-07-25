@@ -11,7 +11,7 @@ namespace Dopamedia\StateMachine\Model\Graph\Adapter;
 use phpDocumentor\GraphViz\Edge;
 use phpDocumentor\GraphViz\Graph;
 use phpDocumentor\GraphViz\Node;
-use \Zend\Math\Rand;
+use Dopamedia\StateMachine\Helper\Generator\StringGenerator;
 
 class PhpDocumentorGraphAdapter implements GraphAdapterInterface
 {
@@ -134,7 +134,7 @@ class PhpDocumentorGraphAdapter implements GraphAdapterInterface
     public function render($type, $fileName = null)
     {
         if ($fileName === null) {
-            $fileName = sys_get_temp_dir() . '/' . Rand::getString(16);
+            $fileName = sys_get_temp_dir() . '/' . StringGenerator::generateRandomString(16);
         }
         $this->graph->export($type, $fileName);
 

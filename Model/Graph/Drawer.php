@@ -13,7 +13,7 @@ use Dopamedia\StateMachine\Api\ProcessStateInterface;
 use Dopamedia\StateMachine\Api\ProcessTransitionInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Phrase;
-use \Zend\Math\Rand;
+use Dopamedia\StateMachine\Helper\Generator\StringGenerator;
 
 class Drawer implements DrawerInterface
 {
@@ -155,7 +155,7 @@ class Drawer implements DrawerInterface
      */
     protected function getDiamondId()
     {
-        return Rand::getString(16);
+        return StringGenerator::generateRandomString(16);
     }
 
     /**
