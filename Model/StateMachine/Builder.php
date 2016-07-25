@@ -14,7 +14,7 @@ use Dopamedia\StateMachine\Api\ProcessTransitionInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Phrase;
 
-class Builder
+class Builder implements BuilderInterface
 {
     const STATE_NAME_ATTRIBUTE = 'name';
     const STATE_DISPLAY_ATTRIBUTE = 'display';
@@ -88,12 +88,9 @@ class Builder
         $this->process = $process;
         $this->configuration = $configuration;
     }
-
-
+    
     /**
-     * @param $processName
-     * @return ProcessProcessInterface
-     * @throws LocalizedException
+     * @inheritdoc
      */
     public function createProcess($processName)
     {
