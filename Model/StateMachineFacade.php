@@ -16,13 +16,21 @@ class StateMachineFacade implements StateMachineFacadeInterface
     private $factory;
 
     /**
+     * @var StateMachine\BuilderInterface
+     */
+    private $stateMachineBuilder;
+    
+    /**
      * @param StateMachineFactory $factory
+     * @param StateMachine\BuilderInterface $stateMachineBuilder
      */
     public function __construct(
-        StateMachineFactory $factory
+        StateMachineFactory $factory,
+        StateMachine\BuilderInterface $stateMachineBuilder
     )
     {
         $this->factory = $factory;
+        $this->stateMachineBuilder = $stateMachineBuilder;
     }
 
     /**
@@ -30,12 +38,11 @@ class StateMachineFacade implements StateMachineFacadeInterface
      */
     public function drawProcess($processName, $highlightState = null, $format = null, $fontSize = null)
     {
-        $process = $this->factory
-            ->createStateMachineBuilder()
+        $process = $this->stateMachineBuilder
             ->createProcess($processName);
 
         return $this->factory
-            ->createGraphDrawer('***TODO::replace me***')
+            ->createGraphDrawer($processName)
             ->draw($process, $highlightState, $format, $fontSize);
     }
 }

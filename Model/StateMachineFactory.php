@@ -38,67 +38,13 @@ class StateMachineFactory
     }
 
     /**
-     * @return \Dopamedia\StateMachine\Model\StateMachine\BuilderInterface
-     */
-    public function createStateMachineBuilder()
-    {
-        return $this->objectManager->create('Dopamedia\StateMachine\Model\StateMachine\Builder', [
-            'event' => $this->createProcessEvent(),
-            'process' => $this->createProcessState(),
-            'state' => $this->createProcessTransition(),
-            'transition' => $this->createProcessProcess(),
-            'configuration' => $this->getConfiguration()
-        ]);
-    }
-
-    /**
-     * @return \Dopamedia\StateMachine\Api\ProcessEventInterface
-     */
-    public function createProcessEvent()
-    {
-        return $this->objectManager->create('Dopamedia\StateMachine\Api\ProcessEventInterface');
-    }
-
-    /**
-     * @return \Dopamedia\StateMachine\Api\ProcessStateInterface
-     */
-    public function createProcessState()
-    {
-        return $this->objectManager->create('Dopamedia\StateMachine\Api\ProcessStateInterface');
-    }
-
-    /**
-     * @return \Dopamedia\StateMachine\Api\ProcessTransitionInterface
-     */
-    public function createProcessTransition()
-    {
-        return $this->objectManager->create('Dopamedia\StateMachine\Api\ProcessTransitionInterface');
-    }
-
-    /**
-     * @return \Dopamedia\StateMachine\Api\ProcessProcessInterface
-     */
-    public function createProcessProcess()
-    {
-        return $this->objectManager->create('Dopamedia\StateMachine\Api\ProcessProcessInterface');
-    }
-
-    /**
-     * @return ConfigurationInterface
-     */
-    public function getConfiguration()
-    {
-        return $this->objectManager->create('Dopamedia\StateMachine\Model\ConfigurationInterface');
-    }
-
-    /**
-     * @param string $stateMachineName
+     * @param string $processName
      * @return \Dopamedia\StateMachine\Model\Graph\DrawerInterface
      */
-    public function createGraphDrawer($stateMachineName)
+    public function createGraphDrawer($processName)
     {
         return $this->objectManager->create('Dopamedia\StateMachine\Model\Graph\DrawerInterface', [
-            'graph' => $this->createGraph($stateMachineName)
+            'graph' => $this->createGraph($processName)
         ]);
     }
 

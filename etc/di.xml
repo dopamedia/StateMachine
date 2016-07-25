@@ -5,6 +5,7 @@
     <preference for="Dopamedia\StateMachine\Api\ProcessStateInterface" type="Dopamedia\StateMachine\Model\Process\State" />
     <preference for="Dopamedia\StateMachine\Api\ProcessTransitionInterface" type="Dopamedia\StateMachine\Model\Process\Transition" />
     <preference for="Dopamedia\StateMachine\Model\ConfigurationInterface" type="Dopamedia\StateMachine\Model\Configuration" />
+    <preference for="Dopamedia\StateMachine\Model\StateMachine\BuilderInterface" type="Dopamedia\StateMachine\Model\StateMachine\Builder" />
     <preference for="Dopamedia\StateMachine\Model\Graph\GraphInterface" type="Dopamedia\StateMachine\Model\Graph\Graph" />
     <preference for="Dopamedia\StateMachine\Model\Graph\DrawerInterface" type="Dopamedia\StateMachine\Model\Graph\Drawer" />
     <preference for="Dopamedia\StateMachine\Model\Graph\Adapter\GraphAdapterInterface" type="Dopamedia\StateMachine\Model\Graph\Adapter\PhpDocumentorGraphAdapter" />
