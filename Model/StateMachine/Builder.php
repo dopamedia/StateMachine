@@ -88,7 +88,7 @@ class Builder implements BuilderInterface
         $this->process = $process;
         $this->configuration = $configuration;
     }
-    
+
     /**
      * @inheritdoc
      */
