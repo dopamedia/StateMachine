@@ -127,7 +127,12 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
         foreach ($this->getChildrenByName($parentNode, 'events') as $eventsNode) {
             foreach ($this->getAllChildElements($eventsNode) as $eventNode) {
                 $eventName = $eventNode->attributes->getNamedItem('name')->nodeValue;
-                $events[$eventName] = [];
+                $events[$eventName] = [
+                    'command' => (string)$eventNode->getAttribute('command'),
+                    'manual' => (bool)$eventNode->getAttribute('manual'),
+                    'onEnter' => (string)$eventNode->getAttribute('onEnter'),
+                    'timeout' => (string)$eventNode->getAttribute('timeout')
+                ];
             }
         }
         return $events;

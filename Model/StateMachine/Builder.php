@@ -228,6 +228,7 @@ class Builder implements BuilderInterface
 
     /**
      * @TODO::add configuration to event
+     * @TODO::refactor
      *
      * @param string $eventName
      * @param array $eventConfiguration
@@ -236,6 +237,21 @@ class Builder implements BuilderInterface
     protected function createEvent($eventName, array $eventConfiguration)
     {
         $event = clone $this->event;
+        if ($eventConfiguration['command']) {
+            $event->setCommand($eventConfiguration['command']);
+        }
+
+        if ($eventConfiguration['manual']) {
+            $event->setManual($eventConfiguration['manual']);
+        }
+
+        if ($eventConfiguration['onEnter']) {
+            $event->setOnEnter($eventConfiguration['onEnter']);
+        }
+
+        if ($eventConfiguration['timeout']) {
+            $event->setTimeout($eventConfiguration['timeout']);
+        }
         $event->setName($eventName);
         return $event;
     }
