@@ -367,7 +367,7 @@ class Drawer implements DrawerInterface
             $label[] = '&infin;';
         }
 
-        return $labelx;
+        return $label;
     }
 
     /**
