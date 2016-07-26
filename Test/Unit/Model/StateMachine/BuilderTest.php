@@ -10,27 +10,23 @@ namespace Dopamedia\StateMachine\Model\StateMachine;
 
 class BuilderTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var array
-     */
-    protected static $configurationData = [
-        'identifier' => [
-            'states' => [
-                'start' => [],
-                'end' => []
-            ],
-            'transitions' => [
-                [
-                    'source' => 'start',
-                    'target' => 'end',
-                    'event' => 'finish'
-                ]
-            ],
-            'events' => [
-                'finish' => []
+    protected static $processData = [
+        'states' => [
+            'start' => [],
+            'end' => []
+        ],
+        'transitions' => [
+            [
+                'source' => 'start',
+                'target' => 'end',
+                'event' => 'finish'
             ]
+        ],
+        'events' => [
+            'finish' => []
         ]
     ];
+
 
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject|\Dopamedia\StateMachine\Model\Configuration
@@ -61,11 +57,26 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException \Magento\Framework\Exception\LocalizedException
+     * @expectedExceptionMessage Process "absent_process" does not exist
+     */
+    public function testCreateProcessWithAbsentProcessNameThrowsException()
+    {
+        $this->configurationMock->expects($this->any())
+            ->method('getProcess')
+            ->with($this->equalTo('absent_process'))
+            ->willReturn(null);
+
+        $this->builder->createProcess('absent_process');
+    }
+
     public function testCreateProcessReturnsProcessInstance()
     {
         $this->configurationMock->expects($this->any())
-            ->method('getAll')
-            ->willReturn(self::$configurationData);
+            ->method('getProcess')
+            ->with($this->equalTo('identifier'))
+            ->willReturn(self::$processData);
 
         $process = $this->builder->createProcess('identifier');
         $this->assertInstanceOf(\Dopamedia\StateMachine\Api\ProcessProcessInterface::class, $process);
@@ -74,8 +85,9 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testCreateProcessShouldIncludeAllStatesFromConfiguration()
     {
         $this->configurationMock->expects($this->any())
-            ->method('getAll')
-            ->willReturn(self::$configurationData);
+            ->method('getProcess')
+            ->with($this->equalTo('identifier'))
+            ->willReturn(self::$processData);
 
         $process = $this->builder->createProcess('identifier');
         $this->assertCount(2, $process->getStates());
@@ -85,8 +97,9 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testCreateProcessShouldIncludeAllTransitions()
     {
         $this->configurationMock->expects($this->any())
-            ->method('getAll')
-            ->willReturn(self::$configurationData);
+            ->method('getProcess')
+            ->with($this->equalTo('identifier'))
+            ->willReturn(self::$processData);
 
         $process = $this->builder->createProcess('identifier');
 

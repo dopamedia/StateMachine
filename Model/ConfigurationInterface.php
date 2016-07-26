@@ -14,7 +14,7 @@ interface ConfigurationInterface
 
     /**
      * @param string $processName
-     * @return array
+     * @return array|null
      */
     public function getProcess($processName);
 }

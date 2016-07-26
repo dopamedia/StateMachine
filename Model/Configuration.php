@@ -39,6 +39,6 @@ class Configuration extends \Magento\Framework\Config\Data implements Configurat
      */
     public function getProcess($processName)
     {
-        return $this->get('processes/' . $processName, []);
+        return $this->get('processes/' . $processName, []) ?: null;
     }
 }

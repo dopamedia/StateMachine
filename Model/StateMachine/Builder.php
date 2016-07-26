@@ -98,15 +98,21 @@ class Builder implements BuilderInterface
             return self::$processBuffer[$processName];
         }
 
-        list($processMap, $mainProcess) = $this->createMainSubProcess();
+        if (is_null($this->getProcessConfiguration($processName))) {
+            throw new LocalizedException(
+                new Phrase('Process "%1" does not exist', [$processName])
+            );
+        }
 
-        $stateToProcessMap = $this->createStates($processMap);
+        list($processMap, $mainProcess) = $this->createMainSubProcess($processName);
 
-        $this->createSubProcesses($processMap);
+        $stateToProcessMap = $this->createStates($processName, $processMap);
 
-        $eventMap = $this->createEvents();
+        $this->createSubProcesses($processName, $processMap);
 
-        $this->createTransitions($stateToProcessMap, $processMap, $eventMap);
+        $eventMap = $this->createEvents($processName);
+
+        $this->createTransitions($processName, $stateToProcessMap, $processMap, $eventMap);
 
         self::$processBuffer[$processName] = $mainProcess;
         
@@ -114,52 +120,52 @@ class Builder implements BuilderInterface
     }
 
     /**
+     * @param $processName
+     * @return array|null
+     */
+    protected function getProcessConfiguration($processName)
+    {
+        return $this->configuration->getProcess($processName);
+    }
+
+
+    /**
+     * @param string $processName
      * @return array
      * @throws LocalizedException
      */
-    protected function createMainSubProcess()
+    protected function createMainSubProcess($processName)
     {
         $mainProcess = null;
         $processMap = [];
+        
+        $process = clone $this->process;
+        $process->setName($processName);
+        $processMap[$processName] = $process;
 
-        foreach ($this->configuration->getAll() as $processName => $processConfiguration) {
-            $process = clone $this->process;
-            $process->setName($processName);
-            $processMap[$processName] = $process;
-
-            /**
-             * @TODO::identify main-process
-             */
-            $mainProcess = $process;
-        }
-
-        if ($mainProcess === null) {
-            throw new LocalizedException(__('Main process could not be created.'));
-        }
+        /**
+         * @TODO::identify main-process
+         */
+        $mainProcess = $process;
 
         return [$processMap, $mainProcess];
     }
 
     /**
+     * @param string $processName
      * @param array $processMap
      * @return array
      */
-    protected function createStates(array $processMap)
+    protected function createStates($processName, array $processMap)
     {
         $stateToProcessMap = [];
+        $processConfiguration = $this->getProcessConfiguration($processName);
+        $process = $processMap[$processName];
 
-        foreach ($this->configuration->getAll() as $processName => $processConfiguration) {
-            /** @var ProcessProcessInterface $process */
-            $process = $processMap[$processName];
-
-            if (empty($processConfiguration['states'])) {
-                continue;
-            }
-
+        if (!empty($processConfiguration['states'])) {
             foreach ($processConfiguration['states'] as $stateName => $stateConfiguration) {
                 $state = $this->createState($stateName, $stateConfiguration, $process);
                 $process->addState($state);
-
                 $stateToProcessMap[$stateName] = $process;
             }
         }
@@ -184,26 +190,30 @@ class Builder implements BuilderInterface
 
     /**
      * @TODO::implement logic for subProcesses
+     * @param string $processName
      * @param array $processMap
      */
-    protected function createSubProcesses(array $processMap)
+    protected function createSubProcesses($processName, array $processMap)
     {
-        foreach ($this->configuration->getAll() as $processName => $processConfiguration) {
-            $process = $processMap[$processName];
+        $process = $processMap[$processName];
+        $processConfiguration = $this->getProcessConfiguration($processName);
 
-            if (isset($processConfiguration['subprocesses'])) {
+        if (isset($processConfiguration['subprocesses'])) {
 
-            }
         }
+
     }
 
-    protected function createEvents()
+    /**
+     * @param string $processName
+     * @return array
+     */
+    protected function createEvents($processName)
     {
         $eventMap = [];
-        foreach ($this->configuration->getAll() as $processName => $processConfiguration) {
-            if (!isset($processConfiguration['events'])) {
-                continue;
-            }
+        $processConfiguration = $this->getProcessConfiguration($processName);
+
+        if (isset($processConfiguration['events'])) {
             $eventsConfiguration = $processConfiguration['events'];
             foreach ($eventsConfiguration as $eventName => $eventConfiguration) {
                 $event = $this->createEvent($eventName, $eventConfiguration);
@@ -231,17 +241,16 @@ class Builder implements BuilderInterface
     }
 
     /**
+     * @param string $processName
      * @param array $stateToProcessMap
      * @param array $processMap
      * @param array $eventMap
      */
-    protected function createTransitions(array $stateToProcessMap, array $processMap, array $eventMap)
+    protected function createTransitions($processName, array $stateToProcessMap, array $processMap, array $eventMap)
     {
-        foreach ($this->configuration->getAll() as $processName => $processConfiguration) {
-            if (!isset($processConfiguration['transitions'])) {
-                continue;
-            }
+        $processConfiguration = $this->getProcessConfiguration($processName);
 
+        if (isset($processConfiguration['transitions'])) {
             foreach ($processConfiguration['transitions'] as $transitionConfiguration) {
                 $transition = $this->createTransition($stateToProcessMap, $eventMap, $transitionConfiguration);
                 $processMap[$processName]->addTransition($transition);
