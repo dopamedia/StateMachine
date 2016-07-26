@@ -97,11 +97,21 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
         $transitions = [];
         foreach ($this->getChildrenByName($parentNode, 'transitions') as $transitionsNode) {
             foreach ($this->getAllChildElements($transitionsNode) as $transitionNode) {
-                $transitions[] = [
+                $transition = [
                     'source' => $this->getFirstChildByName($transitionNode, 'source')->nodeValue,
                     'target' => $this->getFirstChildByName($transitionNode, 'target')->nodeValue,
                     'event' => $this->getFirstChildByName($transitionNode, 'event')->nodeValue
                 ];
+
+                if ($condition = (string)$transitionNode->getAttribute('condition')) {
+                    $transition['condition'] = $condition;
+                }
+
+                if ($happyCase = (bool)$transitionNode->getAttribute('happy')) {
+                    $transition['happy'] = $happyCase;
+                }
+
+                $transitions[] = $transition;
             }
         }
         return $transitions;

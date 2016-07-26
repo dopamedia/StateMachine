@@ -272,11 +272,11 @@ class Builder implements BuilderInterface
         $transition = clone $this->transition;
 
         if (isset($transitionConfiguration['condition'])) {
-            // @TODO::implement condition
+            $transition->setCondition($transitionConfiguration['condition']);
         }
 
         if (isset($transitionConfiguration['happy'])) {
-            // @TODO:implement happy-case
+            $transition->setHappyCase($transitionConfiguration['happy']);
         }
 
         $sourceState = $transitionConfiguration['source'];
