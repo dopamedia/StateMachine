@@ -16,7 +16,7 @@ class StringGenerator extends \Zend\Math\Rand
      * @param int $length
      * @return string
      */
-    public static function generateRandomString($length)
+    public function generateRandomString($length)
     {
         return parent::getString($length, self::CHAR_LIST);
     }

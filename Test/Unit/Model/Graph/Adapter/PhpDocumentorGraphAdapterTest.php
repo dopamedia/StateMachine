@@ -6,9 +6,9 @@
  * Time: 11:53
  */
 
-namespace Dopamedia\StateMachine\Test\Unit\Model\Graph\Adapter;
+namespace Dopamedia\StateMachine\Model\Graph\Adapter;
 
-use Dopamedia\StateMachine\Model\Graph\Adapter\PhpDocumentorGraphAdapter;
+use Dopamedia\StateMachine\Helper\Generator\StringGenerator;
 
 class PhpDocumentorGraphAdapterTest extends \PHPUnit_Framework_TestCase
 {
@@ -120,7 +120,7 @@ class PhpDocumentorGraphAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testRender()
     {
-        $adapter = new PhpDocumentorGraphAdapter();
+        $adapter = new PhpDocumentorGraphAdapter(new StringGenerator());
         $adapter->create(self::GRAPH_NAME);
 
         $this->assertInternalType('string', $adapter->render('svg'));
@@ -131,7 +131,7 @@ class PhpDocumentorGraphAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testRenderWithFileName()
     {
-        $adapter = new PhpDocumentorGraphAdapter();
+        $adapter = new PhpDocumentorGraphAdapter(new StringGenerator());
         $adapter->create(self::GRAPH_NAME);
 
         $this->assertInternalType('string', $adapter->render('svg', sys_get_temp_dir() . '/filename'));
@@ -142,7 +142,7 @@ class PhpDocumentorGraphAdapterTest extends \PHPUnit_Framework_TestCase
      */
     private function getAdapter()
     {
-        $adapter = new PhpDocumentorGraphAdapter();
+        $adapter = new PhpDocumentorGraphAdapter(new StringGenerator());
 
         return $adapter;
     }

@@ -104,13 +104,20 @@ class Drawer implements DrawerInterface
     protected $graph;
 
     /**
+     * @var StringGenerator
+     */
+    protected $stringGenerator;
+
+    /**
      * @param \Dopamedia\StateMachine\Model\Graph\GraphInterface $graph
      */
     public function __construct(
-        \Dopamedia\StateMachine\Model\Graph\GraphInterface $graph
+        \Dopamedia\StateMachine\Model\Graph\GraphInterface $graph,
+        \Dopamedia\StateMachine\Helper\Generator\StringGenerator $stringGenerator
     )
     {
         $this->graph = $graph;
+        $this->stringGenerator = $stringGenerator;
     }
 
     /**
@@ -155,7 +162,7 @@ class Drawer implements DrawerInterface
      */
     protected function getDiamondId()
     {
-        return StringGenerator::generateRandomString(16);
+        return $this->stringGenerator->generateRandomString(16);
     }
 
     /**
@@ -360,7 +367,7 @@ class Drawer implements DrawerInterface
             $label[] = '&infin;';
         }
 
-        return $label;
+        return $labelx;
     }
 
     /**

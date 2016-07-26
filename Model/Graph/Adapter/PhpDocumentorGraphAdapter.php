@@ -21,6 +21,22 @@ class PhpDocumentorGraphAdapter implements GraphAdapterInterface
     private $graph;
 
     /**
+     * @var StringGenerator
+     */
+    protected $stringGenerator;
+
+    /**
+     * @param StringGenerator $stringGenerator
+     */
+    public function __construct(
+        \Dopamedia\StateMachine\Helper\Generator\StringGenerator $stringGenerator
+    )
+    {
+        $this->stringGenerator = $stringGenerator;
+    }
+
+
+    /**
      * @return \phpDocumentor\GraphViz\Graph
      */
     private function createPhpDocumentorGraph()
@@ -134,7 +150,7 @@ class PhpDocumentorGraphAdapter implements GraphAdapterInterface
     public function render($type, $fileName = null)
     {
         if ($fileName === null) {
-            $fileName = sys_get_temp_dir() . '/' . StringGenerator::generateRandomString(16);
+            $fileName = sys_get_temp_dir() . '/' . $this->stringGenerator->generateRandomString(16);
         }
         $this->graph->export($type, $fileName);
 

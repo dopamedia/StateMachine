@@ -237,19 +237,19 @@ class Builder implements BuilderInterface
     protected function createEvent($eventName, array $eventConfiguration)
     {
         $event = clone $this->event;
-        if ($eventConfiguration['command']) {
+        if (isset($eventConfiguration['command'])) {
             $event->setCommand($eventConfiguration['command']);
         }
 
-        if ($eventConfiguration['manual']) {
+        if (isset($eventConfiguration['manual'])) {
             $event->setManual($eventConfiguration['manual']);
         }
 
-        if ($eventConfiguration['onEnter']) {
+        if (isset($eventConfiguration['onEnter'])) {
             $event->setOnEnter($eventConfiguration['onEnter']);
         }
 
-        if ($eventConfiguration['timeout']) {
+        if (isset($eventConfiguration['timeout'])) {
             $event->setTimeout($eventConfiguration['timeout']);
         }
         $event->setName($eventName);

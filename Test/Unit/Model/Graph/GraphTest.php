@@ -6,9 +6,8 @@
  * Time: 11:45
  */
 
-namespace Dopamedia\StateMachine\Test\Unit\Model\Graph;
+namespace Dopamedia\StateMachine\Model\Graph;
 
-use \Dopamedia\StateMachine\Model\Graph\Graph;
 use Dopamedia\StateMachine\Model\Graph\Adapter\GraphAdapterInterface;
 
 class GraphTest extends \PHPUnit_Framework_TestCase
