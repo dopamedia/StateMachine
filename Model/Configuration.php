@@ -8,8 +8,6 @@
 
 namespace Dopamedia\StateMachine\Model;
 
-use Dopamedia\StateMachine\Api\ProcessProcessInterface;
-
 class Configuration extends \Magento\Framework\Config\Data implements ConfigurationInterface
 {
     /**
@@ -39,6 +37,62 @@ class Configuration extends \Magento\Framework\Config\Data implements Configurat
      */
     public function getProcess($processName)
     {
-        return $this->get('processes/' . $processName, []) ?: null;
+        return $this->get('processes/' . $processName);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getStates($processName)
+    {
+        return $this->get('processes/' . $processName . '/states');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTransitions($processName)
+    {
+        return $this->get('processes/' . $processName . '/transitions');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEvents($processName)
+    {
+        return $this->get('processes/' . $processName . '/events');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEventCommand($processName, $eventName)
+    {
+        return $this->get('processes/' .$processName . '/events/' . $eventName . '/command');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEventManual($processName, $eventName)
+    {
+        return $this->get('processes/' .$processName . '/events/' . $eventName . '/manual');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEventOnEnter($processName, $eventName)
+    {
+        return $this->get('processes/' .$processName . '/events/' . $eventName . '/onEnter');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getEventTimeout($processName, $eventName)
+    {
+        return $this->get('processes/' .$processName . '/events/' . $eventName . '/timeout');
     }
 }

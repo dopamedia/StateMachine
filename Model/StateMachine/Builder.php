@@ -23,13 +23,8 @@ class Builder implements BuilderInterface
     const PROCESS_FILE_ATTRIBUTE = 'file';
     const PROCESS_MAIN_FLAG_ATTRIBUTE = 'main';
 
-    const EVENT_COMMAND_ATTRIBUTE = 'command';
-    const EVENT_MANUAL_ATTRIBUTE = 'manual';
-    const EVENT_ON_ENTER_ATTRIBUTE = 'onEnter';
-    const EVENT_TIMEOUT_ATTRIBUTE = 'timeout';
-
-    const TRANSITION_CONDITION_ATTRIBUTE = 'condition';
-    const TRANSITION_HAPPY_PATH_ATTRIBUTE = 'happy';
+    const TRANSITION_CONDITION_KEY = 'condition';
+    const TRANSITION_HAPPY_PATH_KEY = 'happy';
 
     /**
      * @var ProcessProcessInterface[]
@@ -72,14 +67,14 @@ class Builder implements BuilderInterface
      * @param \Dopamedia\StateMachine\Api\ProcessProcessInterface $process
      * @param \Dopamedia\StateMachine\Api\ProcessStateInterface $state
      * @param \Dopamedia\StateMachine\Api\ProcessTransitionInterface $transition
-     * @param \Dopamedia\StateMachine\Model\Configuration $configuration
+     * @param \Dopamedia\StateMachine\Model\ConfigurationInterface $configuration
      */
     public function __construct(
         \Dopamedia\StateMachine\Api\ProcessEventInterface $event,
         \Dopamedia\StateMachine\Api\ProcessProcessInterface $process,
         \Dopamedia\StateMachine\Api\ProcessStateInterface $state,
         \Dopamedia\StateMachine\Api\ProcessTransitionInterface $transition,
-        \Dopamedia\StateMachine\Model\Configuration $configuration
+        \Dopamedia\StateMachine\Model\ConfigurationInterface $configuration
     )
     {
         $this->event = $event;
@@ -159,11 +154,10 @@ class Builder implements BuilderInterface
     protected function createStates($processName, array $processMap)
     {
         $stateToProcessMap = [];
-        $processConfiguration = $this->getProcessConfiguration($processName);
         $process = $processMap[$processName];
 
-        if (!empty($processConfiguration['states'])) {
-            foreach ($processConfiguration['states'] as $stateName => $stateConfiguration) {
+        if ($statesConfiguration = $this->configuration->getStates($processName)) {
+            foreach ($statesConfiguration as $stateName => $stateConfiguration) {
                 $state = $this->createState($stateName, $stateConfiguration, $process);
                 $process->addState($state);
                 $stateToProcessMap[$stateName] = $process;
@@ -195,13 +189,6 @@ class Builder implements BuilderInterface
      */
     protected function createSubProcesses($processName, array $processMap)
     {
-        $process = $processMap[$processName];
-        $processConfiguration = $this->getProcessConfiguration($processName);
-
-        if (isset($processConfiguration['subprocesses'])) {
-
-        }
-
     }
 
     /**
@@ -211,12 +198,10 @@ class Builder implements BuilderInterface
     protected function createEvents($processName)
     {
         $eventMap = [];
-        $processConfiguration = $this->getProcessConfiguration($processName);
 
-        if (isset($processConfiguration['events'])) {
-            $eventsConfiguration = $processConfiguration['events'];
+        if ($eventsConfiguration = $this->configuration->getEvents($processName)) {
             foreach ($eventsConfiguration as $eventName => $eventConfiguration) {
-                $event = $this->createEvent($eventName, $eventConfiguration);
+                $event = $this->createEvent($processName, $eventName);
                 if ($event === null) {
                     continue;
                 }
@@ -227,31 +212,30 @@ class Builder implements BuilderInterface
     }
 
     /**
-     * @TODO::add configuration to event
-     * @TODO::refactor
-     *
+     * @param string $processName
      * @param string $eventName
-     * @param array $eventConfiguration
      * @return \Dopamedia\StateMachine\Api\ProcessEventInterface
      */
-    protected function createEvent($eventName, array $eventConfiguration)
+    protected function createEvent($processName, $eventName)
     {
         $event = clone $this->event;
-        if (isset($eventConfiguration['command'])) {
-            $event->setCommand($eventConfiguration['command']);
+
+        if (!is_null($command = $this->configuration->getEventCommand($processName, $eventName))) {
+            $event->setCommand($command);
         }
 
-        if (isset($eventConfiguration['manual'])) {
-            $event->setManual($eventConfiguration['manual']);
+        if (!is_null($manual = $this->configuration->getEventManual($processName, $eventName))) {
+            $event->setManual($manual);
         }
 
-        if (isset($eventConfiguration['onEnter'])) {
-            $event->setOnEnter($eventConfiguration['onEnter']);
+        if (!is_null($onEnter = $this->configuration->getEventOnEnter($processName, $eventName))) {
+            $event->setOnEnter($onEnter);
         }
 
-        if (isset($eventConfiguration['timeout'])) {
-            $event->setTimeout($eventConfiguration['timeout']);
+        if (!is_null($timeout = $this->configuration->getEventTimeout($processName, $eventName))) {
+            $event->setTimeout($timeout);
         }
+
         $event->setName($eventName);
         return $event;
     }
@@ -264,10 +248,8 @@ class Builder implements BuilderInterface
      */
     protected function createTransitions($processName, array $stateToProcessMap, array $processMap, array $eventMap)
     {
-        $processConfiguration = $this->getProcessConfiguration($processName);
-
-        if (isset($processConfiguration['transitions'])) {
-            foreach ($processConfiguration['transitions'] as $transitionConfiguration) {
+        if ($transitionsConfiguration = $this->configuration->getTransitions($processName)) {
+            foreach ($transitionsConfiguration as $transitionConfiguration) {
                 $transition = $this->createTransition($stateToProcessMap, $eventMap, $transitionConfiguration);
                 $processMap[$processName]->addTransition($transition);
             }
