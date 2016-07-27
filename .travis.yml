@@ -29,3 +29,7 @@ script:
 
 after_script:
     - sh -c "if [ '$TEST_SUITE' = 'unit' ]; then php vendor/bin/coveralls; fi"
+
+addons:
+    code_climate:
+        repo_token: 2ab91604eedc0a66d2033644ab9f4ce603bd6d6571c1fc24745b470a6369f850
