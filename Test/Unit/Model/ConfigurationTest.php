@@ -83,6 +83,24 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['first', 'second'], $this->model->getStates('process_name'));
     }
 
+    public function testGetStateFlags()
+    {
+        $expected = ['process_name' =>
+            ['states' => ['state_name' => [
+                'flags' => ['flag1', 'flag2', 'flag3']
+            ]]]
+        ];
+        $this->cacheMock->expects(
+            $this->once()
+        )->method(
+            'load'
+        )->will(
+            $this->returnValue(serialize(['processes' => $expected]))
+        );
+        $this->model = new \Dopamedia\StateMachine\Model\Configuration($this->readerMock, $this->cacheMock, 'cache_id');
+        $this->assertEquals(['flag1', 'flag2', 'flag3'], $this->model->getStateFlags('process_name', 'state_name'));
+    }
+
     public function testGetTransitions()
     {
         $expected = ['process_name' =>
@@ -97,6 +115,96 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         );
         $this->model = new \Dopamedia\StateMachine\Model\Configuration($this->readerMock, $this->cacheMock, 'cache_id');
         $this->assertEquals(['first', 'second'], $this->model->getTransitions('process_name'));
+    }
+
+    public function testGetTransitionHappy()
+    {
+        $expected = ['process_name' =>
+            ['transitions' => [[
+                'happy' => true
+            ]]]
+        ];
+        $this->cacheMock->expects(
+            $this->once()
+        )->method(
+            'load'
+        )->will(
+            $this->returnValue(serialize(['processes' => $expected]))
+        );
+        $this->model = new \Dopamedia\StateMachine\Model\Configuration($this->readerMock, $this->cacheMock, 'cache_id');
+        $this->assertTrue($this->model->getTransitionHappy('process_name', 0));
+    }
+
+    public function testGetTransitionCondition()
+    {
+        $expected = ['process_name' =>
+            ['transitions' => [[
+                'condition' => '\Example\Condition'
+            ]]]
+        ];
+        $this->cacheMock->expects(
+            $this->once()
+        )->method(
+            'load'
+        )->will(
+            $this->returnValue(serialize(['processes' => $expected]))
+        );
+        $this->model = new \Dopamedia\StateMachine\Model\Configuration($this->readerMock, $this->cacheMock, 'cache_id');
+        $this->assertEquals('\Example\Condition', $this->model->getTransitionCondition('process_name', 0));
+    }
+
+    public function testGetTransitionSource()
+    {
+        $expected = ['process_name' =>
+            ['transitions' => [[
+                'source' => 'source_state'
+            ]]]
+        ];
+        $this->cacheMock->expects(
+            $this->once()
+        )->method(
+            'load'
+        )->will(
+            $this->returnValue(serialize(['processes' => $expected]))
+        );
+        $this->model = new \Dopamedia\StateMachine\Model\Configuration($this->readerMock, $this->cacheMock, 'cache_id');
+        $this->assertEquals('source_state', $this->model->getTransitionSource('process_name', 0));
+    }
+
+    public function testGetTransitionTarget()
+    {
+        $expected = ['process_name' =>
+            ['transitions' => [[
+                'target' => 'target_state'
+            ]]]
+        ];
+        $this->cacheMock->expects(
+            $this->once()
+        )->method(
+            'load'
+        )->will(
+            $this->returnValue(serialize(['processes' => $expected]))
+        );
+        $this->model = new \Dopamedia\StateMachine\Model\Configuration($this->readerMock, $this->cacheMock, 'cache_id');
+        $this->assertEquals('target_state', $this->model->getTransitionTarget('process_name', 0));
+    }
+
+    public function testGetTransitionEvent()
+    {
+        $expected = ['process_name' =>
+            ['transitions' => [[
+                'event' => 'event_name'
+            ]]]
+        ];
+        $this->cacheMock->expects(
+            $this->once()
+        )->method(
+            'load'
+        )->will(
+            $this->returnValue(serialize(['processes' => $expected]))
+        );
+        $this->model = new \Dopamedia\StateMachine\Model\Configuration($this->readerMock, $this->cacheMock, 'cache_id');
+        $this->assertEquals('event_name', $this->model->getTransitionEvent('process_name', 0));
     }
 
     public function testGetEvents()

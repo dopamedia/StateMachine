@@ -328,21 +328,4 @@ class State implements ProcessStateInterface
     {
         return $this->flags;
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function getDisplay()
-    {
-        return $this->display;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setDisplay($display)
-    {
-        $this->display = $display;
-        return $this;
-    }
 }

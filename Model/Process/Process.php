@@ -33,69 +33,6 @@ class Process implements ProcessProcessInterface
     protected $transitions = [];
 
     /**
-     * @var bool
-     */
-    protected $main;
-
-    /**
-     * @var string
-     */
-    protected $file;
-
-    /**
-     * @var ProcessProcessInterface[]
-     */
-    protected $subProcesses = [];
-
-    /**
-     * @inheritDoc
-     */
-    public function setSubProcesses(array $subProcesses)
-    {
-        $this->subProcesses = $subProcesses;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSubProcesses()
-    {
-        return $this->subProcesses;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hasSubProcesses()
-    {
-        return count($this->subProcesses) > 0;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function addSubProcess(ProcessProcessInterface $subProcess)
-    {
-        $this->subProcesses[] = $subProcess;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setMain($main)
-    {
-        $this->main = $main;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMain()
-    {
-        return $this->main;
-    }
-
-    /**
      * @inheritDoc
      */
     public function setName($name)
@@ -219,17 +156,6 @@ class Process implements ProcessProcessInterface
         if ($this->hasStates()) {
             $states = $this->getStates();
         }
-
-        if (!$this->hasSubProcesses()) {
-            return $states;
-        }
-
-        foreach ($this->getSubProcesses() as $subProcess) {
-            if (!$subProcess->hasStates()) {
-                continue;
-            }
-            $states = array_merge($states, $subProcess->getStates());
-        }
         return $states;
     }
 
@@ -242,12 +168,6 @@ class Process implements ProcessProcessInterface
         if ($this->hasTransitions()) {
             $transitions = $this->getTransitions();
         }
-        foreach ($this->getSubProcesses() as $subProcess) {
-            if ($subProcess->hasTransitions()) {
-                $transitions = array_merge($transitions, $subProcess->getTransitions());
-            }
-        }
-
         return $transitions;
     }
 
@@ -331,33 +251,7 @@ class Process implements ProcessProcessInterface
      */
     public function getAllProcesses()
     {
-        $processes = [];
         $processes[] = $this;
-        $processes = array_merge($processes, $this->getSubProcesses());
         return $processes;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function setFile($file)
-    {
-        $this->file = $file;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hasFile()
-    {
-        return isset($this->file);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getFile()
-    {
-        return $this->file;
     }
 }

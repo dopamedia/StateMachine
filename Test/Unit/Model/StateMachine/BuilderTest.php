@@ -127,20 +127,18 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->configurationMock->expects($this->once())
             ->method('getTransitions')
-            ->will($this->returnValue(self::$processData['transitions']));
+            ->willReturn(self::$processData['transitions']);
+
+        $this->configurationMock->expects($this->once())
+            ->method('getTransitionSource')
+            ->willReturn(self::$processData['transitions'][0]['source']);
+
+        $this->configurationMock->expects($this->once())
+            ->method('getTransitionTarget')
+            ->willReturn(self::$processData['transitions'][0]['target']);
 
         $process = $this->builder->createProcess('identifier');
         $this->assertCount(1, $process->getTransitions());
         $this->assertInstanceOf(\Dopamedia\StateMachine\Model\Process\Transition::class, $process->getTransitions()[0]);
-    }
-
-    public function testCreateProcessShouldIncludeAllSubProcesses()
-    {
-        $this->markTestSkipped('not implemented yet');
-    }
-
-    public function testCreateProcessShouldFlagMainProcess()
-    {
-        $this->markTestSkipped('not implemented yet');
     }
 }

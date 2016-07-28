@@ -10,22 +10,13 @@ namespace Dopamedia\StateMachine\Model\StateMachine;
 
 use Dopamedia\StateMachine\Api\ProcessEventInterface;
 use Dopamedia\StateMachine\Api\ProcessProcessInterface;
+use Dopamedia\StateMachine\Api\ProcessStateInterface;
 use Dopamedia\StateMachine\Api\ProcessTransitionInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Phrase;
 
 class Builder implements BuilderInterface
 {
-    const STATE_NAME_ATTRIBUTE = 'name';
-    const STATE_DISPLAY_ATTRIBUTE = 'display';
-
-    const PROCESS_NAME_ATTRIBUTE = 'name';
-    const PROCESS_FILE_ATTRIBUTE = 'file';
-    const PROCESS_MAIN_FLAG_ATTRIBUTE = 'main';
-
-    const TRANSITION_CONDITION_KEY = 'condition';
-    const TRANSITION_HAPPY_PATH_KEY = 'happy';
-
     /**
      * @var ProcessProcessInterface[]
      */
@@ -99,12 +90,10 @@ class Builder implements BuilderInterface
             );
         }
 
-        list($processMap, $mainProcess) = $this->createMainSubProcess($processName);
+        list($processMap, $mainProcess) = $this->createMainProcess($processName);
 
         $stateToProcessMap = $this->createStates($processName, $processMap);
-
-        $this->createSubProcesses($processName, $processMap);
-
+        
         $eventMap = $this->createEvents($processName);
 
         $this->createTransitions($processName, $stateToProcessMap, $processMap, $eventMap);
@@ -129,21 +118,13 @@ class Builder implements BuilderInterface
      * @return array
      * @throws LocalizedException
      */
-    protected function createMainSubProcess($processName)
+    protected function createMainProcess($processName)
     {
-        $mainProcess = null;
         $processMap = [];
-        
         $process = clone $this->process;
         $process->setName($processName);
         $processMap[$processName] = $process;
-
-        /**
-         * @TODO::identify main-process
-         */
-        $mainProcess = $process;
-
-        return [$processMap, $mainProcess];
+        return [$processMap, $process];
     }
 
     /**
@@ -158,7 +139,7 @@ class Builder implements BuilderInterface
 
         if ($statesConfiguration = $this->configuration->getStates($processName)) {
             foreach ($statesConfiguration as $stateName => $stateConfiguration) {
-                $state = $this->createState($stateName, $stateConfiguration, $process);
+                $state = $this->createState($processName, $stateName, $process);
                 $process->addState($state);
                 $stateToProcessMap[$stateName] = $process;
             }
@@ -167,28 +148,35 @@ class Builder implements BuilderInterface
     }
 
     /**
-     * @TODO::add configuration to state
-     *
+     * @param string $processName
      * @param string $stateName
-     * @param array $stateConfiguration
      * @param ProcessProcessInterface $process
      * @return \Dopamedia\StateMachine\Api\ProcessStateInterface
      */
-    protected function createState($stateName, array $stateConfiguration, ProcessProcessInterface $process)
+    protected function createState($processName, $stateName, ProcessProcessInterface $process)
     {
         $state = clone $this->state;
         $state->setName($stateName);
         $state->setProcess($process);
+
+        if (!is_null($flags = $this->configuration->getStateFlags($processName, $stateName))) {
+            $state = $this->addStateFlags($state, $flags);
+        }
+
         return $state;
     }
 
     /**
-     * @TODO::implement logic for subProcesses
-     * @param string $processName
-     * @param array $processMap
+     * @param ProcessStateInterface $state
+     * @param array $flags
+     * @return ProcessStateInterface
      */
-    protected function createSubProcesses($processName, array $processMap)
+    protected function addStateFlags(ProcessStateInterface $state, array $flags)
     {
+        foreach ($flags as $flag) {
+            $state->addFlag($flag);
+        }
+        return $state;
     }
 
     /**
@@ -249,66 +237,67 @@ class Builder implements BuilderInterface
     protected function createTransitions($processName, array $stateToProcessMap, array $processMap, array $eventMap)
     {
         if ($transitionsConfiguration = $this->configuration->getTransitions($processName)) {
-            foreach ($transitionsConfiguration as $transitionConfiguration) {
-                $transition = $this->createTransition($stateToProcessMap, $eventMap, $transitionConfiguration);
+            foreach (array_keys($transitionsConfiguration) as $transitionIndex) {
+                $transition = $this->createTransition($stateToProcessMap, $eventMap, $processName, $transitionIndex);
                 $processMap[$processName]->addTransition($transition);
             }
         }
     }
 
     /**
-     * @todo::add configuration to transition
-     *
      * @param array $stateToProcessMap
      * @param array $eventMap
-     * @param array $transitionConfiguration
+     * @param int $transitionIndex
+     * @param string $processName
      * @return \Dopamedia\StateMachine\Api\ProcessTransitionInterface
      */
-    protected function createTransition(array $stateToProcessMap, array $eventMap, array $transitionConfiguration)
+    protected function createTransition(array $stateToProcessMap, array $eventMap, $processName, $transitionIndex)
     {
 
         $transition = clone $this->transition;
 
-        if (isset($transitionConfiguration['condition'])) {
-            $transition->setCondition($transitionConfiguration['condition']);
+        if (!is_null($condition = $this->configuration->getTransitionCondition($processName, $transitionIndex))) {
+            $transition->setCondition($condition);
         }
 
-        if (isset($transitionConfiguration['happy'])) {
-            $transition->setHappyCase($transitionConfiguration['happy']);
+        if (!is_null($happy = $this->configuration->getTransitionHappy($processName, $transitionIndex))) {
+            $transition->setHappyCase($happy);
         }
 
-        $sourceState = $transitionConfiguration['source'];
+        $sourceStateName = $this->configuration->getTransitionSource($processName, $transitionIndex);
+        $this->setTransitionSource($stateToProcessMap, $sourceStateName, $transition);
 
-        $this->setTransitionSource($stateToProcessMap, $sourceState, $transition);
-        $this->setTransitionTarget($stateToProcessMap, $transitionConfiguration, $sourceState, $transition);
-        $this->setTransitionEvent($eventMap, $transitionConfiguration, $sourceState, $transition);
+        $targetStateName = $this->configuration->getTransitionTarget($processName, $transitionIndex);
+        $this->setTransitionTarget($stateToProcessMap, $targetStateName, $sourceStateName, $transition);
+
+        $transitionEventName = $this->configuration->getTransitionEvent($processName, $transitionIndex);
+        $this->setTransitionEvent($eventMap, $transitionEventName, $sourceStateName, $transition);
 
         return $transition;
     }
 
     /**
      * @param ProcessProcessInterface[] $stateToProcessMap
-     * @param string $sourceName
+     * @param string $sourceStateName
      * @param ProcessTransitionInterface $transition
      *
      * @return void
      */
     protected function setTransitionSource(
         array $stateToProcessMap,
-        $sourceName,
+        $sourceStateName,
         ProcessTransitionInterface $transition
     ) {
-
-        $sourceProcess = $stateToProcessMap[$sourceName];
-        $sourceState = $sourceProcess->getState($sourceName);
+        $sourceProcess = $stateToProcessMap[$sourceStateName];
+        $sourceState = $sourceProcess->getState($sourceStateName);
         $transition->setSourceState($sourceState);
         $sourceState->addOutgoingTransition($transition);
     }
 
     /**
      * @param ProcessProcessInterface[] $stateToProcessMap
-     * @param array $transitionConfiguration
-     * @param string $sourceName
+     * @param string $targetStateName
+     * @param string $sourceStateName
      * @param ProcessTransitionInterface $transition
      *
      * @throws LocalizedException
@@ -317,16 +306,15 @@ class Builder implements BuilderInterface
      */
     protected function setTransitionTarget(
         array $stateToProcessMap,
-        array $transitionConfiguration,
-        $sourceName,
+        $targetStateName,
+        $sourceStateName,
         $transition
     ) {
-        $targetStateName = $transitionConfiguration['target'];
         if (!isset($stateToProcessMap[$targetStateName])) {
             throw new LocalizedException(
                 new Phrase(
                     'Target: "%1" does not exist from source: "%2"',
-                    [$targetStateName, $sourceName]
+                    [$targetStateName, $sourceStateName]
                 )
             );
         }
@@ -339,22 +327,22 @@ class Builder implements BuilderInterface
 
     /**
      * @param ProcessEventInterface[] $eventMap
-     * @param array $transitionConfiguration
+     * @param string|null $transitionEventName
      * @param string $sourceState
      * @param ProcessTransitionInterface $transition
-     *
      * @throws LocalizedException
-     *
      * @return void
      */
-    protected function setTransitionEvent(array $eventMap, array $transitionConfiguration, $sourceState, $transition)
+    protected function setTransitionEvent(
+        array $eventMap,
+        $transitionEventName,
+        $sourceState,
+        $transition
+    )
     {
-        if (isset($transitionConfiguration['event'])) {
-            $eventName = $transitionConfiguration['event'];
-
-            $this->assertEventExists($eventMap, $sourceState, $eventName);
-
-            $event = $eventMap[$eventName];
+        if (!is_null($transitionEventName)) {
+            $this->assertEventExists($eventMap, $sourceState, $transitionEventName);
+            $event = $eventMap[$transitionEventName];
             $event->addTransition($transition);
             $transition->setEvent($event);
         }
@@ -364,9 +352,7 @@ class Builder implements BuilderInterface
      * @param array $eventMap
      * @param string $sourceName
      * @param string $eventName
-     *
      * @throws LocalizedException
-     *
      * @return void
      */
     protected function assertEventExists(array $eventMap, $sourceName, $eventName)

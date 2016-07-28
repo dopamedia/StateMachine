@@ -12,42 +12,6 @@ namespace Dopamedia\StateMachine\Api;
 interface ProcessProcessInterface
 {
     /**
-     * @param ProcessProcessInterface[] $subProcesses
-     *
-     * @return void
-     */
-    public function setSubProcesses(array $subProcesses);
-
-    /**
-     * @return ProcessProcessInterface[]
-     */
-    public function getSubProcesses();
-
-    /**
-     * @return bool
-     */
-    public function hasSubProcesses();
-
-    /**
-     * @param ProcessProcessInterface $subProcess
-     *
-     * @return void
-     */
-    public function addSubProcess(ProcessProcessInterface $subProcess);
-
-    /**
-     * @param mixed $main
-     *
-     * @return void
-     */
-    public function setMain($main);
-
-    /**
-     * @return mixed
-     */
-    public function getMain();
-
-    /**
      * @param mixed $name
      *
      * @return void
@@ -159,21 +123,4 @@ interface ProcessProcessInterface
      * @return ProcessProcessInterface[]
      */
     public function getAllProcesses();
-
-    /**
-     * @param mixed $file
-     *
-     * @return void
-     */
-    public function setFile($file);
-
-    /**
-     * @return bool
-     */
-    public function hasFile();
-
-    /**
-     * @return mixed
-     */
-    public function getFile();
 }

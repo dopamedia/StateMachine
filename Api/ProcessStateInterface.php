@@ -160,16 +160,4 @@ interface ProcessStateInterface
      * @return array
      */
     public function getFlags();
-
-    /**
-     * @return string
-     */
-    public function getDisplay();
-
-    /**
-     * @param string $display
-     *
-     * @return ProcessStateInterface
-     */
-    public function setDisplay($display);
 }

@@ -24,9 +24,87 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
                 'transitions' => $this->gatherTransitions($processNode),
                 'events' => $this->gatherEvents($processNode)
             ];
-
         }
         return $result;
+    }
+
+    /**
+     * @param \DOMElement $parentNode
+     * @return array
+     */
+    protected function gatherStates(\DOMElement $parentNode)
+    {
+        $states = [];
+        foreach ($this->getChildrenByName($parentNode, 'states') as $statesNode) {
+            foreach ($this->getAllChildElements($statesNode) as $stateNode) {
+                $stateName = $stateNode->attributes->getNamedItem('name')->nodeValue;
+                $states[$stateName] = [];
+            }
+        }
+        return $states;
+    }
+
+    /**
+     * @param \DOMElement $parentNode
+     * @return array
+     */
+    protected function gatherTransitions(\DOMElement $parentNode)
+    {
+        $transitions = [];
+        foreach ($this->getChildrenByName($parentNode, 'transitions') as $transitionsNode) {
+            foreach ($this->getAllChildElements($transitionsNode) as $transitionNode) {
+                $transition = [
+                    'source' => $this->getFirstChildByName($transitionNode, 'source')->nodeValue,
+                    'target' => $this->getFirstChildByName($transitionNode, 'target')->nodeValue,
+                    'event' => $this->getFirstChildByName($transitionNode, 'event')->nodeValue
+                ];
+
+                if ($condition = $this->getAttributeString($transitionNode, 'condition')) {
+                    $transition['condition'] = $condition;
+                }
+
+                if ($happyCase = $this->getAttributeBoolean($transitionNode, 'happy')) {
+                    $transition['happy'] = $happyCase;
+                }
+
+                $transitions[] = $transition;
+            }
+        }
+        return $transitions;
+    }
+
+    /**
+     * @param \DOMElement $parentNode
+     * @return array
+     */
+    protected function gatherEvents(\DOMElement $parentNode)
+    {
+        $events = [];
+        foreach ($this->getChildrenByName($parentNode, 'events') as $eventsNode) {
+            foreach ($this->getAllChildElements($eventsNode) as $eventNode) {
+                $eventName = $eventNode->attributes->getNamedItem('name')->nodeValue;
+                $event = [];
+
+                if (!is_null($command = $this->getAttributeString($eventNode, 'command'))) {
+                    $event['command'] = $command;
+                }
+
+                if (!is_null($manual = $this->getAttributeString($eventNode, 'manual'))) {
+                    $event['manual'] = $manual;
+                }
+
+                if (!is_null($onEnter = $this->getAttributeString($eventNode, 'onEnter'))) {
+                    $event['onEnter'] = $onEnter;
+                }
+
+                if (!is_null($timeOut = $this->getAttributeString($eventNode, 'timeOut'))) {
+                    $event['timeOut'] = $timeOut;
+                }
+
+                $events[$eventName] = $event;
+            }
+        }
+        return $events;
     }
 
     /**
@@ -73,68 +151,26 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
     }
 
     /**
-     * @param \DOMElement $parentNode
-     * @return array
+     * @param \DOMElement $node
+     * @param string $attributeName
+     * @return string|null
      */
-    protected function gatherStates(\DOMElement $parentNode)
+    protected function getAttributeString(\DOMElement $node, $attributeName)
     {
-        $states = [];
-        foreach ($this->getChildrenByName($parentNode, 'states') as $statesNode) {
-            foreach ($this->getAllChildElements($statesNode) as $stateNode) {
-                $stateName = $stateNode->attributes->getNamedItem('name')->nodeValue;
-                $states[$stateName] = [];
-            }
-        }
-        return $states;
+        return ($node->getAttribute($attributeName) !== '') ? $node->getAttribute($attributeName) : null;
     }
 
     /**
-     * @param \DOMElement $parentNode
-     * @return array
+     * @param \DOMElement $node
+     * @param $attributeName
+     * @param null $default
+     * @return bool|null
      */
-    protected function gatherTransitions(\DOMElement $parentNode)
+    protected function getAttributeBoolean(\DOMElement $node, $attributeName, $default = null)
     {
-        $transitions = [];
-        foreach ($this->getChildrenByName($parentNode, 'transitions') as $transitionsNode) {
-            foreach ($this->getAllChildElements($transitionsNode) as $transitionNode) {
-                $transition = [
-                    'source' => $this->getFirstChildByName($transitionNode, 'source')->nodeValue,
-                    'target' => $this->getFirstChildByName($transitionNode, 'target')->nodeValue,
-                    'event' => $this->getFirstChildByName($transitionNode, 'event')->nodeValue
-                ];
-
-                if ($condition = (string)$transitionNode->getAttribute('condition')) {
-                    $transition['condition'] = $condition;
-                }
-
-                if ($happyCase = (bool)$transitionNode->getAttribute('happy')) {
-                    $transition['happy'] = $happyCase;
-                }
-
-                $transitions[] = $transition;
-            }
+        if ($node->getAttribute($attributeName) !== '') {
+            return ($node->getAttribute($attributeName) === 'true') ? true : false;
         }
-        return $transitions;
-    }
-
-    /**
-     * @param \DOMElement $parentNode
-     * @return array
-     */
-    protected function gatherEvents(\DOMElement $parentNode)
-    {
-        $events = [];
-        foreach ($this->getChildrenByName($parentNode, 'events') as $eventsNode) {
-            foreach ($this->getAllChildElements($eventsNode) as $eventNode) {
-                $eventName = $eventNode->attributes->getNamedItem('name')->nodeValue;
-                $events[$eventName] = [
-                    'command' => (string)$eventNode->getAttribute('command'),
-                    'manual' => (bool)$eventNode->getAttribute('manual'),
-                    'onEnter' => (string)$eventNode->getAttribute('onEnter'),
-                    'timeout' => (string)$eventNode->getAttribute('timeout')
-                ];
-            }
-        }
-        return $events;
+        return $default;
     }
 }

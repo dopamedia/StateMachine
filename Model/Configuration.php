@@ -47,6 +47,11 @@ class Configuration extends \Magento\Framework\Config\Data implements Configurat
     {
         return $this->get('processes/' . $processName . '/states');
     }
+    
+    public function getStateFlags($processName, $stateName)
+    {
+        return $this->get('processes/' . $processName . '/states/' . $stateName . '/flags');
+    }
 
     /**
      * @inheritdoc
@@ -54,6 +59,46 @@ class Configuration extends \Magento\Framework\Config\Data implements Configurat
     public function getTransitions($processName)
     {
         return $this->get('processes/' . $processName . '/transitions');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTransitionHappy($processName, $transitionIndex)
+    {
+        return $this->get('processes/' . $processName . '/transitions/' . $transitionIndex . '/happy');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTransitionCondition($processName, $transitionIndex)
+    {
+        return $this->get('processes/' . $processName . '/transitions/' . $transitionIndex . '/condition');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTransitionSource($processName, $transitionIndex)
+    {
+        return $this->get('processes/' . $processName . '/transitions/' . $transitionIndex . '/source');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTransitionTarget($processName, $transitionIndex)
+    {
+        return $this->get('processes/' . $processName . '/transitions/' . $transitionIndex . '/target');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getTransitionEvent($processName, $transitionIndex)
+    {
+        return $this->get('processes/' . $processName . '/transitions/' . $transitionIndex . '/event');
     }
 
     /**
