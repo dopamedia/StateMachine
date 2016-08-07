@@ -20,6 +20,12 @@ interface ConfigurationInterface
 
     /**
      * @param string $processName
+     * @return string|null
+     */
+    public function getProcessObjectClass($processName);
+
+    /**
+     * @param string $processName
      * @return array|null
      */
     public function getStates($processName);

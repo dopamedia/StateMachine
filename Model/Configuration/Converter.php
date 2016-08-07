@@ -19,7 +19,9 @@ class Converter implements \Magento\Framework\Config\ConverterInterface
         $rootElement = $this->getRootElement($document);
         foreach ($this->getChildrenByName($rootElement, 'process') as $processNode) {
             $processName = $processNode->attributes->getNamedItem('name')->nodeValue;
+            $processObjectClass = $processNode->attributes->getNamedItem('object')->nodeValue;
             $result['processes'][$processName] = [
+                'objectClass' => $processObjectClass,
                 'states' => $this->gatherStates($processNode),
                 'transitions' => $this->gatherTransitions($processNode),
                 'events' => $this->gatherEvents($processNode)

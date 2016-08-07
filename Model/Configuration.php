@@ -41,13 +41,26 @@ class Configuration extends \Magento\Framework\Config\Data implements Configurat
     }
 
     /**
+     * @param $processName
+     * @return array|mixed|null
+     */
+    public function getProcessObjectClass($processName)
+    {
+        return $this->get('processes/' . $processName . '/objectClass');
+    }
+    
+
+    /**
      * @inheritdoc
      */
     public function getStates($processName)
     {
         return $this->get('processes/' . $processName . '/states');
     }
-    
+
+    /**
+     * @inheritdoc
+     */
     public function getStateFlags($processName, $stateName)
     {
         return $this->get('processes/' . $processName . '/states/' . $stateName . '/flags');

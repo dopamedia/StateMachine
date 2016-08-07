@@ -67,6 +67,22 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['process_configuration'], $this->model->getProcess('process_name'));
     }
 
+    public function testGetProcessObjectClass()
+    {
+        $expected = ['process_name' =>
+            ['objectClass' => 'Vendor\Namespace\Model\Object']
+        ];
+        $this->cacheMock->expects(
+            $this->once()
+        )->method(
+            'load'
+        )->will(
+            $this->returnValue(serialize(['processes' => $expected]))
+        );
+        $this->model = new \Dopamedia\StateMachine\Model\Configuration($this->readerMock, $this->cacheMock, 'cache_id');
+        $this->assertEquals('Vendor\Namespace\Model\Object', $this->model->getProcessObjectClass('process_name'));
+    }
+
     public function testGetStates()
     {
         $expected = ['process_name' =>

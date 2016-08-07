@@ -24,6 +24,17 @@ interface ProcessProcessInterface
     public function getName();
 
     /**
+     * @param string $objectClass
+     * @return void
+     */
+    public function setObjectClass($objectClass);
+
+    /**
+     * @return mixed
+     */
+    public function getObjectClass();
+
+    /**
      * @param ProcessStateInterface[] $states
      *
      * @return void

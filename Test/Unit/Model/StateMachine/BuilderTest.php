@@ -11,6 +11,7 @@ namespace Dopamedia\StateMachine\Model\StateMachine;
 class BuilderTest extends \PHPUnit_Framework_TestCase
 {
     protected static $processData = [
+        'objectClass' => 'Vendor\Namespace\Model\Object',
         'states' => [
             'start' => [],
             'end' => []
@@ -90,6 +91,20 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $process = $this->builder->createProcess('identifier');
         $this->assertInstanceOf(\Dopamedia\StateMachine\Api\ProcessProcessInterface::class, $process);
+    }
+
+    public function testCreateProcessIncludesObjectClass()
+    {
+        $this->configurationMock->expects($this->once())
+            ->method('getProcess')
+            ->willReturn(self::$processData);
+
+        $this->configurationMock->expects($this->once())
+            ->method('getProcessObjectClass')
+            ->willReturn(self::$processData['objectClass']);
+
+        $process = $this->builder->createProcess('identifier');
+        $this->assertEquals($process->getObjectClass(), self::$processData['objectClass']);
     }
 
     public function testCreateProcessShouldIncludeAllStatesFromConfiguration()

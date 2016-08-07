@@ -23,6 +23,11 @@ class Process implements ProcessProcessInterface
     protected $name;
 
     /**
+     * @var string
+     */
+    protected $objectClass;
+
+    /**
      * @var ProcessStateInterface[]
      */
     protected $states = [];
@@ -46,6 +51,22 @@ class Process implements ProcessProcessInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setObjectClass($objectClass)
+    {
+        return $this->objectClass = $objectClass;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getObjectClass()
+    {
+        return $this->objectClass;
     }
 
     /**

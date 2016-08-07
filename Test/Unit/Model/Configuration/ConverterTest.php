@@ -60,7 +60,7 @@ class ConverterTest extends \PHPUnit_Framework_TestCase
     {
         $xml = <<<XML
 <state_machine>
-    <process name="simple">
+    <process name="simple" object="Vendor\Namespace\Model\Object">
         <states>
             <state name="start" />
             <state name="end" />
@@ -81,6 +81,7 @@ XML;
         $result = $this->converter->convert($this->createSource($xml));
         $this->assertArrayHasKey('processes', $result);
         $this->assertArrayHasKey('simple', $result['processes']);
+        $this->assertArrayHasKey('objectClass', $result['processes']['simple']);
         $this->assertArrayHasKey('states', $result['processes']['simple']);
         $this->assertArrayHasKey('transitions', $result['processes']['simple']);
         $this->assertArrayHasKey('events', $result['processes']['simple']);

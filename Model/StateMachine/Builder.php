@@ -123,6 +123,7 @@ class Builder implements BuilderInterface
         $processMap = [];
         $process = clone $this->process;
         $process->setName($processName);
+        $process->setObjectClass($this->configuration->getProcessObjectClass($processName));
         $processMap[$processName] = $process;
         return [$processMap, $process];
     }
