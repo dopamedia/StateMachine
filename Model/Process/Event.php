@@ -46,6 +46,7 @@ class Event implements ProcessEventInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setManual($manual)
     {
@@ -54,6 +55,7 @@ class Event implements ProcessEventInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function isManual()
     {
@@ -62,6 +64,7 @@ class Event implements ProcessEventInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setCommand($command)
     {
@@ -70,6 +73,7 @@ class Event implements ProcessEventInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getCommand()
     {
@@ -86,6 +90,7 @@ class Event implements ProcessEventInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setOnEnter($onEnter)
     {
@@ -94,6 +99,7 @@ class Event implements ProcessEventInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function isOnEnter()
     {
@@ -102,6 +108,7 @@ class Event implements ProcessEventInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setName($id)
     {
@@ -110,6 +117,7 @@ class Event implements ProcessEventInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getName()
     {
@@ -133,10 +141,12 @@ class Event implements ProcessEventInterface
             return ' (timeout)';
         }
 
-        return '';    }
+        return '';
+    }
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function addTransition(ProcessTransitionInterface $transition)
     {
@@ -160,6 +170,7 @@ class Event implements ProcessEventInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getTransitions()
     {
@@ -168,6 +179,7 @@ class Event implements ProcessEventInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setTimeout($timeout)
     {
@@ -176,6 +188,7 @@ class Event implements ProcessEventInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getTimeout()
     {

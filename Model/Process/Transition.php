@@ -41,6 +41,7 @@ class Transition implements ProcessTransitionInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setHappyCase($happy)
     {
@@ -49,6 +50,7 @@ class Transition implements ProcessTransitionInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function isHappyCase()
     {
@@ -57,6 +59,7 @@ class Transition implements ProcessTransitionInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setCondition($condition)
     {
@@ -65,6 +68,7 @@ class Transition implements ProcessTransitionInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getCondition()
     {
@@ -81,6 +85,7 @@ class Transition implements ProcessTransitionInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setEvent(ProcessEventInterface $event)
     {
@@ -89,6 +94,7 @@ class Transition implements ProcessTransitionInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getEvent()
     {
@@ -105,6 +111,7 @@ class Transition implements ProcessTransitionInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setSourceState(ProcessStateInterface $source)
     {
@@ -113,6 +120,7 @@ class Transition implements ProcessTransitionInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getSourceState()
     {
@@ -121,6 +129,7 @@ class Transition implements ProcessTransitionInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setTargetState(ProcessStateInterface $target)
     {
@@ -129,6 +138,7 @@ class Transition implements ProcessTransitionInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getTargetState()
     {

@@ -49,6 +49,7 @@ class State implements ProcessStateInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setIncomingTransitions(array $incomingTransitions)
     {
@@ -58,6 +59,7 @@ class State implements ProcessStateInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getIncomingTransitions()
     {
@@ -74,6 +76,7 @@ class State implements ProcessStateInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setOutgoingTransitions(array $outgoingTransitions)
     {
@@ -83,6 +86,7 @@ class State implements ProcessStateInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getOutgoingTransitions()
     {
@@ -177,6 +181,7 @@ class State implements ProcessStateInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function addIncomingTransition(ProcessTransitionInterface $transition)
     {
@@ -185,6 +190,7 @@ class State implements ProcessStateInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function addOutgoingTransition(ProcessTransitionInterface $transition)
     {
@@ -193,6 +199,7 @@ class State implements ProcessStateInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setName($name)
     {
@@ -202,6 +209,7 @@ class State implements ProcessStateInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getName()
     {
@@ -210,6 +218,7 @@ class State implements ProcessStateInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setProcess(ProcessProcessInterface $process)
     {
@@ -219,6 +228,7 @@ class State implements ProcessStateInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getProcess()
     {
@@ -298,6 +308,7 @@ class State implements ProcessStateInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function addFlag($flag)
     {
@@ -323,6 +334,7 @@ class State implements ProcessStateInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getFlags()
     {

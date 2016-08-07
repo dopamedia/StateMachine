@@ -39,6 +39,7 @@ class Process implements ProcessProcessInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setName($name)
     {
@@ -47,6 +48,7 @@ class Process implements ProcessProcessInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getName()
     {
@@ -55,6 +57,7 @@ class Process implements ProcessProcessInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setObjectClass($objectClass)
     {
@@ -63,6 +66,7 @@ class Process implements ProcessProcessInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getObjectClass()
     {
@@ -71,6 +75,7 @@ class Process implements ProcessProcessInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setStates(array $states)
     {
@@ -79,6 +84,7 @@ class Process implements ProcessProcessInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function addState(ProcessStateInterface $state)
     {
@@ -87,6 +93,7 @@ class Process implements ProcessProcessInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getState($stateId)
     {
@@ -122,6 +129,7 @@ class Process implements ProcessProcessInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getStates()
     {
@@ -138,6 +146,7 @@ class Process implements ProcessProcessInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function addTransition(ProcessTransitionInterface $transition)
     {
@@ -146,6 +155,7 @@ class Process implements ProcessProcessInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function setTransitions(array $transitions)
     {
@@ -154,6 +164,7 @@ class Process implements ProcessProcessInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function getTransitions()
     {
@@ -162,6 +173,7 @@ class Process implements ProcessProcessInterface
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore
      */
     public function hasTransitions()
     {
