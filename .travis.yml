@@ -1,5 +1,7 @@
 dist: trusty
 
+sudo: false
+
 language: php
 
 php:
@@ -29,6 +31,10 @@ script:
 
 after_script:
     - sh -c "if [ '$TEST_SUITE' = 'unit' ]; then php vendor/bin/coveralls; fi"
+
+cache:
+    directories:
+        - $HOME/.composer/cache
 
 addons:
     code_climate:
